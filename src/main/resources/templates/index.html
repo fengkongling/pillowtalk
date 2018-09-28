@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html;charset=UTF-8" />
+    <link th:src="@{bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:src="@{bootstrap/css/bootstrap-theme.min.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body onLoad="remove()">
+<script language="javascript">
+    drag = 0;
+    move = 0;
+    function mousedown()
+    {
+        if(drag)
+        {
+            X1 = window.event.x - parseInt(dragimages.style.left);
+            Y1 = window.event.y - parseInt(dragimages.style.top);
+            dragimages.style.Index += 1;
+            move = 1;
+        }
+    }
+    function mouseStop()
+    {
+        window.event.returnValue = false;
+    }
+    function mousemove()
+    {
+        if (move)
+        {
+            dragimages.style.left = window.event.x - X1;
+            dragimages.style.top = window.event.y - Y1;
+        }
+    }
+    function mouseup()
+    {
+        move = 0;
+    }
+    function remove()
+    {
+        document.all.div1.onmousemove = mousemove;
+        document.all.div1.onmousedown = mousedown;
+        document.all.div1.onmouseup = mouseup;
+        document.all.div1.ondragstart  = mouseStop;
+    }
+</script>
+
+<div id="div1" onMouseOver="dragimages=div1;drag=1;" style="height:77px;left:10px;position:absolute;top:10px;width:90px">
+    <img name="img1" alt="" border="0" th:src="@{images/1.png}" style="cursor:pointer "/>
+</div>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">访问model</h3>
+    </div>
+    <div class="panel-body">
+        <span th:text="${person.name}"></span>
+    </div>
+</div>
+</body>
+</html>

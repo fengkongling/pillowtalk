@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2017 Codyy Educational Technology Co., Ltd.
+  ~ 阔地教育科技有限公司
+  ~ All rights reserved.
+  -->
+
+<configuration>
+    <!-- Define properties -->
+    <property name="PROJECT" value="com-flt-pillowtalk"/>
+    <property name="LOG_PATH" value="/logs/pillowtalk/"/>
+
+    <!-- 彩色日志 -->
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <!-- 彩色日志格式 -->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
+
+    <!-- 控制台输出 -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <!--<pattern>%date [%thread] %-5level %logger - %msg%n</pattern>-->
+        </encoder>
+    </appender>
+
+    <!-- 时间滚动输出 level为 DEBUG 日志 -->
+    <appender name="file—debug"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/${PROJECT}-debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/${PROJECT}-debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %le %lo [%thread]: ## '%msg' '%ex'\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 时间滚动输出 level为 INFO 日志 -->
+    <appender name="file—info"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/${PROJECT}-info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/${PROJECT}-info.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %le %lo [%thread]: ## '%msg' '%ex'\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 时间滚动输出 level为 ERROR 日志 -->
+    <appender name="file—error"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/${PROJECT}-error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/${PROJECT}-error.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %le %lo [%thread]: ## '%msg' '%ex'\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 特定过滤含有某字符串的日志 -->
+    <appender name="file-str"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <expression>message.contains("str")</expression>
+            </evaluator>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <file>${LOG_PATH}/${PROJECT}-contains.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${LOG_PATH}/${PROJECT}-contains.%d{yyyy-MM-dd}.log
+            </FileNamePattern>
+            <MaxHistory>30</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %le %lo [%thread]: ## '%msg' '%ex'\n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 数据库输出 -->
+    <appender name="db" class="ch.qos.logback.classic.db.DBAppender">
+        <connectionSource
+                class="ch.qos.logback.core.db.DriverManagerConnectionSource">
+            <driverClass>com.mysql.jdbc.Driver</driverClass>
+            <url>jdbc:mysql://localhost:3306/codyy_kms</url>
+            <user>root</user>
+            <password>feng520</password>
+        </connectionSource>
+    </appender>
+    <!-- 配合ELK -->
+    <!--    <appender name="stash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>192.168.1.167:9250</destination>
+
+            &lt;!&ndash; encoder is required &ndash;&gt;
+            <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" />
+        </appender>-->
+
+    <!--<logger name="java.sql.Connection">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="java.sql.Statement">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="com.ibatis">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="com.ibatis.common.jdbc.SimpleDataSource">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="com.ibatis.common.jdbc.ScriptRunner">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="com.danga.MemCached">-->
+    <!--<level value="INFO"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.springframework.test">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+    <!--<logger name="org.apache.struts2">-->
+    <!--<level value="DEBUG"/>-->
+    <!--</logger>-->
+
+    <!-- Level values: DEBUG, ERROR, WARNING, INFO, ... -->
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file—debug"/>
+        <appender-ref ref="file—info"/>
+        <appender-ref ref="file—error"/>
+        <appender-ref ref="file-str"/>
+        <appender-ref ref="db"/>
+    </root>
+
+</configuration>
