@@ -12,6 +12,7 @@ public class PillowtalkApplicationTests {
 	@Test
 	public void contextLoads() {
 		System.out.println("1%2");
+		System.out.println("1%2");
 	}
 
 }
